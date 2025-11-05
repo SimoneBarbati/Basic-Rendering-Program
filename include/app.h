@@ -15,7 +15,7 @@ public:
     App();
     ~App();
     int Init();
-    void HandleInput();
+    void HandleInput(double deltaTime);
     void Run();
     void Render();
 

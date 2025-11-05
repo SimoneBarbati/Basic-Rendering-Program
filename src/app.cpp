@@ -58,7 +58,6 @@ int App::Init()
 
     renderer.Init();
     Shader shader = Shader("/home/simone/code/c++/myproject/assets/shaders/vertex.glsl", "/home/simone/code/c++/myproject/assets/shaders/fragment.glsl");
-    shader.Compile();
     shaders.push_back(shader);
 
     mainCamera = Camera(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -66,17 +65,18 @@ int App::Init()
     return 1;
 }
 
-void App::HandleInput()
+void App::HandleInput(double deltaTime)
 {
+    double speed = 1000.0;
     GLFWwindow* window = mainWindow.GetGlfwWindow();
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        mainCamera.position.y -= 10;
+    mainCamera.position.y -= speed * deltaTime;
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        mainCamera.position.x -= 10;
+    mainCamera.position.x -= speed * deltaTime;
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        mainCamera.position.y += 10;
+    mainCamera.position.y += speed * deltaTime;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        mainCamera.position.x += 10;
+    mainCamera.position.x += speed * deltaTime;
 }
 
 void App::Run()
@@ -85,7 +85,7 @@ void App::Run()
     shaders[0].UseShader();
 
     glDisable(GL_DEPTH_TEST);
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    glClearColor(1.0f / 255.0f, 1.0f / 255.0f, 1.0f / 255.0f, 1.0f);
     
     Render();
 }
@@ -98,7 +98,11 @@ void App::Render()
     
     while (!glfwWindowShouldClose(mainWindow.GetGlfwWindow()))
     {
-        HandleInput();
+        double now = glfwGetTime();
+        double deltaTime = now - lastFrame;
+        lastFrame = now;
+
+        HandleInput(deltaTime);
         glClear(GL_COLOR_BUFFER_BIT);
         
         shaders[0].UseShader();
@@ -112,7 +116,7 @@ void App::Render()
         glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3(200.0f, 200.0f, 0.0f));
         float time = glfwGetTime() * 360.0f;
         glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(time), glm::vec3(0.0f, 1.0f, 1.0f));
-        model = translation * rotation * glm::mat4(1.0f);
+        model = translation * glm::mat4(1.0f);
         shaders[0].SetMat4(model, "model");
 
         glm::vec3 color = glm::vec3(1.0f, 0.0f, 1.0f);
