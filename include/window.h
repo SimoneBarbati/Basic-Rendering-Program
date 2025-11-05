@@ -1,5 +1,3 @@
-#include <map>
-#include <memory>
 #include <GLFW/glfw3.h>
 
 #define WINDOW_MANAGER_MANAGED_TO_CHANGE_CONTEXT 0
