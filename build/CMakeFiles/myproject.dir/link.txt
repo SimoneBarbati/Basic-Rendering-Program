@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/myproject.dir/src/app.cpp.o CMakeFiles/myproject.dir/src/main.cpp.o CMakeFiles/myproject.dir/src/window.cpp.o CMakeFiles/myproject.dir/usr/src/glad/glad.c.o -o myproject  /usr/lib/x86_64-linux-gnu/libglfw.so.3.3 /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libOpenGL.so 

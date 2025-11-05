@@ -1,0 +1,3 @@
+/home/simone/code/c++/myproject/build/CMakeFiles/myproject.dir
+/home/simone/code/c++/myproject/build/CMakeFiles/edit_cache.dir
+/home/simone/code/c++/myproject/build/CMakeFiles/rebuild_cache.dir
