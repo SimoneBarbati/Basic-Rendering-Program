@@ -3,24 +3,22 @@
 
 #include "file_reader.h"
 
+#define SINGLE_SHADER 1
+#define SHADER_PROGRAM 2
+
 class Shader
 {
 public:
     Shader(const char* pathToVertexShader, const char* pathToFragmentShader);
-    int Compile();
-    unsigned int GetID();
-    void SetVertexShaderPath(const char* path);
-    void SetFragmentShaderPath(const char* path);
-
+    unsigned int GetId();
+    void UseShader();
     void SetVec3(glm::vec3& vector, const char* vectorName);
     void SetMat4(glm::mat4& matrix, const char* matrixName);
 
-    void UseShader();
-
 private:
     int getUniformLocation(const char* uniformName);
+    bool compile(const char* pathToVertexShader, const char* pathToFragmentShader);
+    bool areThereCompilationErrors(int type, unsigned int program);
 
-    unsigned int ID;
-    const char* vertexShaderPath;
-    const char* fragmentShaderPath;
+    unsigned int id;
 };
