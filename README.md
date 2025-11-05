@@ -15,13 +15,13 @@ sudo apt install libglfw3-dev libglm-dev
 Clone the project
 
 ```bash
-git clone https://github.com/SimoneBarbati/Basic-Rendering-Program BPR
+git clone https://github.com/SimoneBarbati/Basic-Rendering-Program BRP
 ```
 
 Go to the project directory
 
 ```bash
-cd BPR
+cd BRP
 ```
 
 Create build directory
