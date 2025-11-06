@@ -2,8 +2,8 @@
 
 #include "window.h"
 
-Window::Window(int width, int height, const char* title)
-    : width(width), height(height), title(title)
+Window::Window(int width, int height, const char* title, GLFWmonitor* monitor, GLFWwindow* share)
+    : width(width), height(height), title(title), windowMonitor(monitor), sharedContext(share)
 {
 }
 
@@ -15,7 +15,7 @@ Window::~Window()
 
 void Window::CreateGlfwWindow()
 {
-    window = glfwCreateWindow(width, height, title, NULL, NULL);
+    window = glfwCreateWindow(width, height, title, windowMonitor, sharedContext);
     if (window == NULL)
     {
 #ifdef DEBUG

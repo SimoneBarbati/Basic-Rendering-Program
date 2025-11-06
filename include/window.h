@@ -1,13 +1,10 @@
 #include <GLFW/glfw3.h>
 
-#define WINDOW_MANAGER_MANAGED_TO_CHANGE_CONTEXT 0
-#define WINDOW_MANAGER_FAILED_TO_CHANGE_CONTEXT 1
-
 class Window
 {
 public:
     Window() = default;
-    Window(int width, int height, const char* title);
+    Window(int width, int height, const char* title, GLFWmonitor* monitor, GLFWwindow* share);
     ~Window();
 
     void CreateGlfwWindow();
@@ -20,6 +17,8 @@ public:
 private:
     int width = 640, height = 360;
     GLFWwindow* window = nullptr;
+    GLFWwindow* sharedContext = nullptr;
+    GLFWmonitor* windowMonitor = nullptr;
     const char* title = "myproject";
 };
 
