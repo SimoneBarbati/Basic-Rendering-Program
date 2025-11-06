@@ -1,21 +1,12 @@
 #include "camera.h"
 
-Camera::Camera(glm::vec3 pos)
-    : position(pos)
+Camera::Camera(glm::vec2 res, glm::vec3 pos)
+    : resolution(res), position(pos)
 {
-    projectionMatrix = glm::ortho(0.0f, 1280.0f, 720.0f, 0.0f, -100.0f, 100.0f);
+    Update();
 }
 
 void Camera::Update()
 {
-}
-
-glm::vec3 Camera::GetPosition()
-{
-    return position;
-}
-
-glm::mat4 Camera::GetProjectionMatrix()
-{
-    return projectionMatrix;
+    projectionMatrix = glm::ortho(0.0f, resolution.x, resolution.y, 0.0f, -100.0f, 100.0f);
 }
