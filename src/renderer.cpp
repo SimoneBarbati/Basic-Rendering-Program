@@ -21,8 +21,10 @@ void Renderer::Init()
     glEnableVertexAttribArray(0);
 }
 
-void Renderer::RenderQuad(Quad& quad)
+void Renderer::RenderQuad(Quad& quad, Shader& shader, glm::vec3 color)
 {
+    shader.UseShader();
+    shader.SetVec3(color, "color");
     loadQuadVertices(quad);
     glBindVertexArray(quadVao);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -30,6 +32,7 @@ void Renderer::RenderQuad(Quad& quad)
 
 void Renderer::RenderSprite(Sprite& sprite, Shader& shader)
 {
+    shader.UseShader();
     glm::mat4 model = sprite.translation * sprite.rotation * sprite.scale * glm::mat4(1.0f);
     shader.SetMat4(model, "model");
     

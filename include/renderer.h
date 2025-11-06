@@ -9,7 +9,7 @@ class Renderer
 public:
     Renderer() = default;
     void Init();
-    void RenderQuad(Quad& quad);
+    void RenderQuad(Quad& quad, Shader& shader, glm::vec3 color);
     void RenderSprite(Sprite& sprite, Shader& shader);
 
 private:
