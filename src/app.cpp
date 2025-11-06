@@ -4,6 +4,7 @@
 
 #include "app.h"
 #include "shapes.h"
+#include "logger.h"
 
 Quad firstQuad = Quad(
     glm::vec3(440.0f, 260.0f, 0.0f),
@@ -18,6 +19,8 @@ Quad secondQuad = Quad(
     glm::vec3(-100.0f, 100.0f, 0.0f),
     glm::vec3(100.0f, 100.0f, 0.0f)
 );
+
+Sprite sprite;
 
 App::App()
 {
@@ -34,9 +37,7 @@ int App::Init()
 {
     if (!glfwInit())
     {
-#ifdef DEBUG
-        std::cout << "Failed to Initialize GLFW" << std::endl;
-#endif
+        LOG_ERROR("FAILED TO INITIALIZE GLFW")
         return 0;
     }
 
@@ -44,15 +45,17 @@ int App::Init()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    mainWindow = Window(1280, 720, "WINDOW");
+    auto monitor = glfwGetPrimaryMonitor();
+    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+    glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+
+    mainWindow = Window(mode->width, mode->height, "WINDOW", monitor, NULL);
     mainWindow.CreateGlfwWindow();
     glfwMakeContextCurrent(mainWindow.GetGlfwWindow());
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
-#ifdef DEBUG
-        std::cout << "Failed to Initialiaze Glad" << std::endl;
-#endif
+        LOG_ERROR("FAILE TO INITIALIZE GLAD")
         return 0;
     }
 
@@ -60,7 +63,10 @@ int App::Init()
     Shader shader = Shader("/home/simone/code/c++/myproject/assets/shaders/vertex.glsl", "/home/simone/code/c++/myproject/assets/shaders/fragment.glsl");
     shaders.push_back(shader);
 
-    mainCamera = Camera(glm::vec3(0.0f, 0.0f, 0.0f));
+    Shader spriteShader = Shader("/home/simone/code/c++/myproject/assets/shaders/sprite_vertex.glsl", "/home/simone/code/c++/myproject/assets/shaders/sprite_fragment.glsl");
+    shaders.push_back(spriteShader);
+
+    mainCamera = Camera(glm::vec2(mode->width, mode->height), glm::vec3(0.0f, 0.0f, 0.0f));
 
     return 1;
 }
@@ -69,6 +75,7 @@ void App::HandleInput(double deltaTime)
 {
     double speed = 1000.0;
     GLFWwindow* window = mainWindow.GetGlfwWindow();
+
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
     mainCamera.position.y -= speed * deltaTime;
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
@@ -87,6 +94,10 @@ void App::Run()
     glDisable(GL_DEPTH_TEST);
     glClearColor(1.0f / 255.0f, 1.0f / 255.0f, 1.0f / 255.0f, 1.0f);
     
+    sprite = Sprite("/home/simone/code/c++/myproject/assets/images/texture.png");
+    sprite.translation = glm::translate(glm::mat4(1.0f), glm::vec3(960.0f, 540.0f, 0.0));
+    sprite.scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.25f));
+
     Render();
 }
 
@@ -94,7 +105,7 @@ void App::Render()
 {
     glm::mat4 model = glm::mat4(1.0f);
     glm::mat4 projection = mainCamera.GetProjectionMatrix();
-    glm::mat4 view = glm::translate(glm::mat4(1.0f), -mainCamera.GetPosition());
+    glm::mat4 view = glm::translate(glm::mat4(1.0f), -mainCamera.position);
     
     while (!glfwWindowShouldClose(mainWindow.GetGlfwWindow()))
     {
@@ -107,22 +118,18 @@ void App::Render()
         
         shaders[0].UseShader();
 
-        view = glm::translate(glm::mat4(1.0f), -mainCamera.GetPosition());
+        view = glm::translate(glm::mat4(1.0f), -mainCamera.position);
         shaders[0].SetMat4(model, "model");
         shaders[0].SetMat4(view, "view");
         shaders[0].SetMat4(projection, "projection");
+        
+        renderer.RenderQuad(secondQuad, shaders[0], glm::vec3(0.0f, 0.0f, 1.0f));
+        
+        shaders[1].UseShader();
+        shaders[1].SetMat4(view, "view");
+        shaders[1].SetMat4(projection, "projection");
 
-
-        glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3(200.0f, 200.0f, 0.0f));
-        float time = glfwGetTime() * 360.0f;
-        glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(time), glm::vec3(0.0f, 1.0f, 1.0f));
-        model = translation * glm::mat4(1.0f);
-        shaders[0].SetMat4(model, "model");
-
-        glm::vec3 color = glm::vec3(1.0f, 0.0f, 1.0f);
-        shaders[0].SetVec3(color, "color");
-
-        renderer.RenderQuad(secondQuad);
+        renderer.RenderSprite(sprite, shaders[1]);
 
         glfwSwapBuffers(mainWindow.GetGlfwWindow());
         glfwPollEvents();
