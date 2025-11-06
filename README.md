@@ -4,10 +4,11 @@
 This is a Basic Rendering Program written in c++ using the GLFW library to handle window creation and input, and OpenGL to handle the rendering.
 
 # Install dependencies
-- [GLAD](https://glad.dav1d.de/) (Download the glad library for OpenGL core 3.3)
+- [GLAD](https://glad.dav1d.de/) (Download the glad library for OpenGL core 3.3
+  be sure to move the contents to your include and src dirs or the system include and src)
 
 ```bash
-sudo apt install libglfw3-dev libglm-dev
+sudo apt install git cmake libglfw3-dev libglm-dev
 ```
 
 ## Run Locally
