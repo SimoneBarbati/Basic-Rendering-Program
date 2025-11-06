@@ -60,10 +60,10 @@ int App::Init()
     }
 
     renderer.Init();
-    Shader shader = Shader("/home/simone/code/c++/myproject/assets/shaders/vertex.glsl", "/home/simone/code/c++/myproject/assets/shaders/fragment.glsl");
+    Shader shader = Shader("../assets/shaders/vertex.glsl", "../assets/shaders/fragment.glsl");
     shaders.push_back(shader);
 
-    Shader spriteShader = Shader("/home/simone/code/c++/myproject/assets/shaders/sprite_vertex.glsl", "/home/simone/code/c++/myproject/assets/shaders/sprite_fragment.glsl");
+    Shader spriteShader = Shader("../assets/shaders/sprite_vertex.glsl", "../assets/shaders/sprite_fragment.glsl");
     shaders.push_back(spriteShader);
 
     mainCamera = Camera(glm::vec2(mode->width, mode->height), glm::vec3(0.0f, 0.0f, 0.0f));
@@ -94,7 +94,7 @@ void App::Run()
     glDisable(GL_DEPTH_TEST);
     glClearColor(1.0f / 255.0f, 1.0f / 255.0f, 1.0f / 255.0f, 1.0f);
     
-    sprite = Sprite("/home/simone/code/c++/myproject/assets/images/texture.png");
+    sprite = Sprite("../assets/images/texture.png");
     sprite.translation = glm::translate(glm::mat4(1.0f), glm::vec3(960.0f, 540.0f, 0.0));
     sprite.scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.25f));
 
