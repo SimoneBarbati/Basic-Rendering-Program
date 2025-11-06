@@ -1,0 +1,1 @@
+unsigned int LoadTexture(const char* path, int* width, int* height);

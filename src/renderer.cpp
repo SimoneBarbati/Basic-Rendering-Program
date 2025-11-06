@@ -23,12 +23,24 @@ void Renderer::Init()
 
 void Renderer::RenderQuad(Quad& quad)
 {
-    LoadQuadVertices(quad);
+    loadQuadVertices(quad);
     glBindVertexArray(quadVao);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
-void Renderer::LoadQuadVertices(Quad& quad)
+void Renderer::RenderSprite(Sprite& sprite, Shader& shader)
+{
+    glm::mat4 model = sprite.translation * sprite.rotation * sprite.scale * glm::mat4(1.0f);
+    shader.SetMat4(model, "model");
+    
+    glBindVertexArray(sprite.vao);
+    glBindTexture(GL_TEXTURE_2D, sprite.texture);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+}
+
+
+
+void Renderer::loadQuadVertices(Quad& quad)
 {   
     quadVertices = {
         quad.topleft.x, quad.topleft.y, quad.topleft.z,

@@ -1,6 +1,8 @@
 #include <vector>
 
 #include "shapes.h"
+#include "Components/sprite.h"
+#include "shader.h"
 
 class Renderer
 {
@@ -8,9 +10,10 @@ public:
     Renderer() = default;
     void Init();
     void RenderQuad(Quad& quad);
+    void RenderSprite(Sprite& sprite, Shader& shader);
 
 private:
-    void LoadQuadVertices(Quad& quad);
+    void loadQuadVertices(Quad& quad);
     
     Quad lastDrawnQuad;
     unsigned int quadVao, quadVbo, quadEbo;
