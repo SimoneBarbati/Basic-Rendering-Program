@@ -6,9 +6,14 @@
 Shader::Shader(const char* pathToVertexShader, const char* pathToFragmentShader)
 {
     if (!compile(pathToVertexShader, pathToFragmentShader))
+    {
         LOG_ERROR("SHADER DID NOT COMPILE")
+        return;
+    }
     else
+    {
         LOG_MESSAGE("Shader compiled correctly")
+    }
 }
 
 unsigned int Shader::GetId()

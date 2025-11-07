@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.28.3)
 
-project(myproject VERSION 0.0.1)
+project(BRP VERSION 0.0.1)
 
 set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
 set(GLAD_SRC_DIR "/usr/src/glad")
@@ -21,7 +21,7 @@ add_executable(${PROJECT_NAME} ${PROJECT_SOURCE} ${GLAD_SOURCE})
 
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
 if (NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Build Type" FORCE)
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build Type" FORCE)
 endif()
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE $<$<CONFIG:Debug>:DEBUG>)
